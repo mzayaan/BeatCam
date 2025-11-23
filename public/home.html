@@ -48,6 +48,7 @@
             background-position: top;
             background-repeat: no-repeat;
             flex: 1;
+            max-width: 480px;
             width: 100%;
         }
     </style>
@@ -115,7 +116,7 @@
                 break;
         }
         button.style.border = `5px solid rgb(${r}, ${g}, ${b})`;
-    }, 20);
+    }, 10);
 
     const blur = document.getElementById('blur');
     button.addEventListener('mouseenter', () => {
