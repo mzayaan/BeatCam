@@ -48,31 +48,13 @@
             background-position: top;
             background-repeat: no-repeat;
             flex: 1;
-            max-width: 480px;
             width: 100%;
         }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-dark" style="padding: 3px">
-    <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-        <a class="navbar-brand" href="home.html">
-            <img src="/assets/img/logo.png" height="32" alt="BeatCam">
-        </a>
-        <div class="d-flex align-items-center">
-            <a class="btn btn-outline-light me-2" href="library.html">Library</a>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    ⋮
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" href="settings.html">Settings</a></li>
-                    <li><a class="dropdown-item" href="about.html">About</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</nav>
+<!-- Main Header -->
+<header id="header"></header>
 
 <main>
     <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
@@ -84,6 +66,8 @@
     </div>
 </main>
 
+<!-- Scripts -->
+<script src="../assets/js/app.js"></script>
 <script>
     const button = document.getElementById('playButton');
     let r = 128, g = 0, b = 128; // Start with purple

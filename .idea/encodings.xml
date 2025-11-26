@@ -3,5 +3,6 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/public/partials/bottom-nav.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/public/partials/footer.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/public/partials/header.html" charset="UTF-8" />
   </component>
 </project>
