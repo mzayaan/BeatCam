@@ -1,5 +1,4 @@
 // studio.js – BeatCam Studio Logic
-
 document.addEventListener("DOMContentLoaded", () => {
     const videoEl = document.getElementById("studioVideo");
     const trackNameEl = document.getElementById("trackName");
