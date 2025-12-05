@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.fillStyle = "#111";
         ctx.fillRect(0, 0, width, height);
 
-        ctx.strokeStyle = "#822BD9";
+        ctx.strokeStyle = "var(--main-color)";
         ctx.lineWidth = 2;
         ctx.beginPath();
 
