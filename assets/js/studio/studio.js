@@ -1,20 +1,24 @@
 // studio.js – BeatCam Studio Logic
 
+console.log("a");
 document.addEventListener("DOMContentLoaded", () => {
     const videoEl = document.getElementById("studioVideo");
     const trackNameEl = document.getElementById("trackName");
     const beatTimelineEl = document.getElementById("beatTimeline");
     const audioCanvas = document.getElementById("audioTimelineCanvas");
+    console.log("b");
 
     const playBtn = document.getElementById("playVideoBtn");
     const pauseBtn = document.getElementById("pauseVideoBtn");
     const detectBeatsBtn = document.getElementById("detectBeatsBtn");
     const changeTrackBtn = document.getElementById("changeTrackBtn");
+    console.log("c");
 
     if (!videoEl || !beatTimelineEl || !audioCanvas) {
         console.error("[Studio] Missing core DOM elements.");
         return;
     }
+    console.log("d");
 
     const ctx = audioCanvas.getContext("2d");
 
@@ -24,8 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 1️⃣ Try to load temp Blob URL from sessionStorage
     let videoSrc = sessionStorage.getItem("beatcam-temp-video");
-
     // 2️⃣ Fallback to library if no temp clip exists
+    console.log(videoSrc);
     if (!videoSrc) {
         const clips = JSON.parse(localStorage.getItem("beatcam-clips") || "[]");
         if (clips.length > 0) {
