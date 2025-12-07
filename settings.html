@@ -220,7 +220,7 @@
 <script>
     document.getElementById("clearLibraryBtn").onclick = () => {
         if (confirm("Delete all saved clips?")) {
-            localStorage.removeItem("beatcam-clips");
+            deleteAllClips();
             alert("All clips cleared.");
         }
     };

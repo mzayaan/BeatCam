@@ -167,25 +167,13 @@ function startRecording() {
     isRecording = true;
     console.log("🔴 Recording started");
 }
-function saveRecording() {
-    const blob = new Blob(recordedChunks, { type: "video/webm" });
+async function saveRecording() {
+    const blob = new Blob(recordedChunks, {type: "video/webm"});
 
-    // Convert blob to Base64
-    const reader = new FileReader();
-    reader.onload = function () {
-        let base64data = reader.result;
-        saveClipToLibrary(base64data);
-    };
-    reader.readAsDataURL(blob);
+    // store the blob in the DB
+    const clipId = await saveClip(blob);
+    sessionStorage.setItem("selected-clip-id", clipId + "")
 
     // Redirect to studio
-    //window.location.href = "studio.html";
-}
-
-function saveClipToLibrary(data) {
-    let clips = JSON.parse(localStorage.getItem("beatcam-clips")) || [];
-    clips.push({ data });
-    localStorage.setItem("beatcam-clips", JSON.stringify(clips));
-    console.log(JSON.stringify(data))
-    sessionStorage.setItem("beatcam-temp-video", JSON.stringify(data));
+    window.location.href = "studio.html";
 }

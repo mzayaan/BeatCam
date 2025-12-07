@@ -118,25 +118,28 @@
 <script>
     document.addEventListener("DOMContentLoaded", loadClips);
 
-    function loadClips() {
+    async function loadClips() {
         const container = document.getElementById("clipContainer");
         const noMsg = document.getElementById("noVideosMessage");
         container.innerHTML = "";
 
-        let clips = JSON.parse(localStorage.getItem("beatcam-clips")) || [];
+        // Fetch the clips blobs in the DB
+        let clips = await listClips();
         if (clips.length === 0) {
             noMsg.style.display = "block";
             return;
         }
         noMsg.style.display = "none";
 
+        // Iterate through the clips and add them to the list.
         clips.forEach((clip, index) => {
+            const videoURL = URL.createObjectURL(clip.blob);
             const div = document.createElement("div");
             div.className = "clip-item";
             div.innerHTML = `
-                <video class="clip-thumb" src="${clip.data}" muted playsinline></video>
+                <video class="clip-thumb" src="${videoURL}" muted playsinline></video>
                 <p class="clip-title">Clip ${index + 1}</p>
-                <button class="delete-btn">Delete</button>
+                <button class="delete-btn"">Delete</button>
             `;
 
             const video = div.querySelector("video");
@@ -151,24 +154,18 @@
 
             // Open in Studio
             video.addEventListener("click", () => {
-                localStorage.setItem("beatcam-latest-video", clip.url);
+                sessionStorage.setItem("selected-clip-id", clip.id + "")
                 window.location.href = "studio.html";
             });
 
             // Delete
-            deleteBtn.addEventListener("click", () => {
-                deleteClip(index);
+            deleteBtn.addEventListener("click", async () => {
+                await deleteClip(clip.id);
+                await loadClips();
             });
 
             container.appendChild(div);
         });
-    }
-
-    function deleteClip(index) {
-        let clips = JSON.parse(localStorage.getItem("beatcam-clips")) || [];
-        clips.splice(index, 1);
-        localStorage.setItem("beatcam-clips", JSON.stringify(clips));
-        loadClips();
     }
 </script>
 </body>

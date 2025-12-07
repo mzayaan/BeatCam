@@ -61,8 +61,6 @@ function highlightActiveTab() {
     });
 }
 
-/* Shared Utility Functions Across All Pages */
-
 /* Fade In Animation Wrapper */
 function fadeIn(element) {
     element.style.opacity = 0;
@@ -71,6 +69,80 @@ function fadeIn(element) {
         element.style.opacity = 1;
     }, 10);
 }
+
+
+/* Database Functions */
+function openDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open("BeatCamDB", 1);
+        request.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains("clips")) {
+                db.createObjectStore("clips", { keyPath: "id", autoIncrement: true });
+            }
+        };
+        request.onsuccess = (e) => resolve(e.target.result);
+        request.onerror = (e) => reject(e.target.error);
+    });
+}
+async function saveClip(blob) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("clips", "readwrite");
+        const store = tx.objectStore("clips");
+        const request = store.add({ blob, createdAt: Date.now() });
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = (e) => reject(e.target.error);
+    });
+}
+async function deleteClip(id) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("clips", "readwrite");
+        const store = tx.objectStore("clips");
+        const request = store.delete(id);
+        request.onsuccess = () => resolve();
+        request.onerror = (e) => reject(e.target.error);
+    });
+}
+async function loadClip(id) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("clips", "readonly");
+        const store = tx.objectStore("clips");
+        const request = store.get(id);
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = (e) => reject(e.target.error);
+    });
+}
+async function listClips() {
+    const db = await openDB();
+    return new Promise((resolve) => {
+        const tx = db.transaction("clips", "readonly");
+        const store = tx.objectStore("clips");
+        const result = [];
+        store.openCursor().onsuccess = (e) => {
+            const cursor = e.target.result;
+            if (cursor) {
+                result.push({ id: cursor.key, ...cursor.value });
+                cursor.continue();
+            } else {
+                resolve(result);
+            }
+        };
+    });
+}
+async function deleteAllClips() {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("clips", "readonly");
+        const store = tx.objectStore("clips");
+        const request = store.clear();
+        request.onsuccess = () => resolve();
+        request.onerror = (e) => reject(e.target.error);
+    });
+}
+
 
 /* App Ready Log */
 console.log("app.js loaded successfully");

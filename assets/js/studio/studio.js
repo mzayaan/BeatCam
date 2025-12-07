@@ -1,24 +1,20 @@
 // studio.js – BeatCam Studio Logic
 
-console.log("a");
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const videoEl = document.getElementById("studioVideo");
     const trackNameEl = document.getElementById("trackName");
     const beatTimelineEl = document.getElementById("beatTimeline");
     const audioCanvas = document.getElementById("audioTimelineCanvas");
-    console.log("b");
 
     const playBtn = document.getElementById("playVideoBtn");
     const pauseBtn = document.getElementById("pauseVideoBtn");
     const detectBeatsBtn = document.getElementById("detectBeatsBtn");
     const changeTrackBtn = document.getElementById("changeTrackBtn");
-    console.log("c");
 
     if (!videoEl || !beatTimelineEl || !audioCanvas) {
         console.error("[Studio] Missing core DOM elements.");
         return;
     }
-    console.log("d");
 
     const ctx = audioCanvas.getContext("2d");
 
@@ -27,11 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
     --------------------------------------- */
 
     // 1️⃣ Try to load temp Blob URL from sessionStorage
-    let videoSrc = sessionStorage.getItem("beatcam-temp-video");
-    // 2️⃣ Fallback to library if no temp clip exists
-    console.log(videoSrc);
+    const clip = await loadClip(parseInt(sessionStorage.getItem("selected-clip-id")))
+    let videoSrc = URL.createObjectURL(clip.blob);
+    // 2️⃣ Fallback to the library if no temp clip exists
     if (!videoSrc) {
-        const clips = JSON.parse(localStorage.getItem("beatcam-clips") || "[]");
+        const clips = listClips();
         if (clips.length > 0) {
             videoSrc = clips[0].url;
         }
@@ -55,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Beat timeline from BeatSync library (if available)
+        // Beat timeline from the BeatSync library (if available)
         if (window.BeatSync) {
             BeatSync.renderTimeline(beatTimelineEl, videoEl.duration);
         } else {
