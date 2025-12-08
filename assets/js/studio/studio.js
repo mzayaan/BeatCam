@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (!videoSrc) {
-        alert("No clip found. Please record a video in Capture.");
+        setTimeout(() => alert("No clip found. Please record a video in Capture."),1000)
         return;
     }
 
