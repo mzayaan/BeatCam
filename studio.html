@@ -26,8 +26,6 @@
             background: #0f0f0f;
             color: white;
             font-family: Arial, sans-serif;
-            overflow: hidden;
-            height: 100vh;
             display: flex;
             flex-direction: column;
         }
@@ -168,13 +166,13 @@
         #toolsPanel {
             width: 100%;
             flex: 25%;
-            margin-bottom: 20px;
             background: #181818;
             border-top: 1px solid #333;
             display: flex;
-            overflow-x: auto;
             align-items: center;
-            padding: 12px 0;
+            padding: 12px 5px 80px;
+            flex-wrap: wrap;
+            gap: 5px;
         }
 
         .tool-button {
@@ -182,8 +180,7 @@
             color: white;
             border: 1px solid #333;
             padding: 12px 18px;
-            border-radius: 10px;
-            margin: 0 10px;
+            border-radius: 5px;
             white-space: nowrap;
             cursor: pointer;
             transition: 0.2s ease;
@@ -203,9 +200,7 @@
     </style>
 </head>
 
-<body>
-
-<!-- Injected Header -->
+<body style="overflow-y: scroll;">
 <div id="master-header"></div>
 
 <!-- -------------------------------------------------
