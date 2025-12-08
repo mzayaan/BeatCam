@@ -13,7 +13,7 @@ let seconds = 0;
 
 
 /* START/STOP CAMERA + CONSTRAINTS */
-function getCameraConstraints() {
+function getCameraConstraints(okMic) {
     let resolution;
     switch (currentResolution) {
         case "480p":
@@ -26,18 +26,18 @@ function getCameraConstraints() {
             resolution = { width: { ideal: 1280 }, height: { ideal: 720 } };
     }
     return {
-        audio: false,
+        audio: okMic,
         video: {
             facingMode: currentFacingMode,
             ...resolution
         }
     };
 }
-async function startCamera() {
+async function startCamera(okCam, okMic) {
     try {
         if (cameraStream) stopCamera();
 
-        cameraStream = await navigator.mediaDevices.getUserMedia(getCameraConstraints());
+        cameraStream = await navigator.mediaDevices.getUserMedia(getCameraConstraints(okMic));
 
         const videoElement = document.getElementById("cameraView");
         if (videoElement) {

@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 function loadHeader() {
     const container = document.getElementById("master-header");
     if (container) {
-        fetch("/BeatCam/partials/header.html")
+        fetch("partials/header.html")
             .then(res => res.text())
             .then(html => container.innerHTML = html)
             .catch(err => console.error("Header load error:", err));
@@ -19,7 +19,7 @@ function loadHeader() {
 function loadFooter() {
     const container = document.getElementById("master-footer");
     if (container) {
-        fetch("/BeatCam/partials/footer.html")
+        fetch("partials/footer.html")
             .then(res => res.text())
             .then(html => container.innerHTML = html)
             .catch(err => console.error("Footer load error:", err));
@@ -30,7 +30,7 @@ function loadFooter() {
 function loadBottomNav() {
     const container = document.getElementById("bottomNav");
     if (container) {
-        fetch("/BeatCam/partials/bottom-nav.html")
+        fetch("partials/bottom-nav.html")
             .then(res => res.text())
             .then(html => {
                 container.innerHTML = html;
@@ -45,15 +45,15 @@ function loadBottomNav() {
    ---------------------------------------- */
 function highlightActiveTab() {
     // Get the filename of the current page
-    const currentPage = window.location.pathname.split("/BeatCam/").pop();
+    const currentPage = window.location.pathname.split("").pop();
 
     const navLinks = document.querySelectorAll(".bottom-nav a");
 
     navLinks.forEach(link => {
-        // Normalize "/BeatCam/" or "/BeatCam/" → leave only the file name
+        // Normalize "" or "" → leave only the file name
         let linkPage = link.getAttribute("href")
-            ?.replace(/^\.\//, "")      // remove "/BeatCam/"
-            ?.replace(/^\.\.\//, "");   // remove "/BeatCam/"
+            ?.replace(/^\.\//, "")      // remove ""
+            ?.replace(/^\.\.\//, "");   // remove ""
 
         if (linkPage === currentPage) {
             link.classList.add("active");
@@ -151,7 +151,7 @@ console.log("app.js loaded successfully");
 // Register Service Worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker
-        .register('/service-worker.js')
+        .register('service-worker.js')
         .then(() => console.log("Service Worker registered"))
         .catch(err => console.log("SW registration failed:", err));
 }

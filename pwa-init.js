@@ -15,7 +15,7 @@ if (isStandalone) {
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
         navigator.serviceWorker
-            .register("/BeatCam/service-worker.js")
+            .register("service-worker.js")
             .then((reg) => {
                 console.log("%c[PWA] Service Worker registered", "color:#22dd88");
 

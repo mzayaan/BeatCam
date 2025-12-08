@@ -7,11 +7,11 @@
     <file url="file://$PROJECT_DIR$/assets/js/capture/microphone.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/assets/js/capture/spotify.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/assets/js/permissions.js" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/assets/js/pwa-init.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/assets/js/studio/beat-sync.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/partials/bottom-nav.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/partials/footer.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/partials/header.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pwa-init.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service-worker.js" charset="UTF-8" />
   </component>
 </project>

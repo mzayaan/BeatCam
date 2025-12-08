@@ -1,8 +1,9 @@
-const SPOTIFY_CLIENT_ID = "f6a28d98934040d49ff2d526366a870b";
-
+const SPOTIFY_CLIENT_ID = "260e523c8d1e430899632bd0f233e2ce";
+let breakLoop = false;
 // Dynamically match current domain (desktop OR phone)
-const SPOTIFY_REDIRECT_URI = `${window.location.origin}/BeatCam/capture.html`;
+const SPOTIFY_REDIRECT_URI = `${window.location.origin}/capture.html`;
 
+console.log(SPOTIFY_REDIRECT_URI)
 function generateCodeVerifier() {
     let text = "";
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -137,7 +138,8 @@ function showSongOverlay(song) {
         <div id="spotifyOverlay" 
              style="
                 position: fixed;
-                bottom: 20px;
+                bottom: 80px;
+                min-width: 250px;
                 left: 50%;
                 transform: translateX(-50%);
                 background: rgba(0,0,0,0.75);
@@ -163,12 +165,20 @@ function showSongOverlay(song) {
 }
 
 async function updateSpotifyOverlay() {
+    if (breakLoop) return;
     const song = await getCurrentlyPlaying();
     showSongOverlay(song);
-
     setTimeout(updateSpotifyOverlay, 12000);
 }
 
-if (localStorage.getItem("spotify_access_token")) {
-    updateSpotifyOverlay();
+function startDisplayLoop() {
+    if (localStorage.getItem("spotify_access_token")) {
+        updateSpotifyOverlay();
+        const btn = document.getElementById("spotifyConnectBtn");
+        btn.classList.remove("btn-success");
+        btn.classList.add("btn-danger");
+        btn.innerText = "❌ Disconnect from Spotify";
+    } else {
+        breakLoop = true;
+    }
 }

@@ -3,19 +3,20 @@
 const CACHE_NAME = "beatcam-v1";
 
 const ASSETS_TO_CACHE = [
-    "/BeatCam/index.html",
-    "/BeatCam/capture.html",
-    "/BeatCam/studio.html",
-    "/BeatCam/library.html",
-    "/BeatCam/settings.html",
-    "/BeatCam/about.html",
+    "index.html",
+    "capture.html",
+    "studio.html",
+    "library.html",
+    "settings.html",
+    "about.html",
 
-    "/BeatCam/pwa/manifest.json",
-    "/BeatCam/pwa/offline.html",
+    "manifest.json",
+    "offline.html",
+    "service-worker.js",
+    "pwa-init.js",
 
-    "/BeatCam/assets/css/main.css",
-    "/BeatCam/assets/js/app.js",
-    "/BeatCam/assets/js/pwa-init.js"
+    "assets/css/main.css",
+    "assets/js/app.js"
 ];
 
 // Install event
@@ -36,7 +37,7 @@ self.addEventListener("fetch", (event) => {
             return (
                 cacheRes ||
                 fetch(event.request).catch(() => {
-                    return caches.match("/BeatCam/pwa/offline.html");
+                    return caches.match("offline.html");
                 })
             );
         })
