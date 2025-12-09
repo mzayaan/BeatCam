@@ -15,7 +15,7 @@ let okMic = false;
 let okCam = false;
 
 /* START/STOP CAMERA + CONSTRAINTS */
-function getCameraConstraints(okMic) {
+function getCameraConstraints() {
     let resolution;
     switch (currentResolution) {
         case "480p":
