@@ -39,7 +39,13 @@ async function startCamera() {
     } catch (err) {
         console.error("Camera error:", err);
         alert("Please allow camera permissions in your browser to use BeatCam.");
-        alert(err)
+        alert(
+            "Camera Error:\n" +
+            `Name: ${err.name}\n` +
+            `Message: ${err.message}\n` +
+            (err.constraint ? `Constraint: ${err.constraint}\n` : "") +
+            "\nSee console for more details."
+        );
     }
 }
 function stopCamera() {
