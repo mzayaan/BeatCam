@@ -1,7 +1,7 @@
 const SPOTIFY_CLIENT_ID = "260e523c8d1e430899632bd0f233e2ce";
 let breakLoop = false;
 // Dynamically match current domain (desktop OR phone)
-const SPOTIFY_REDIRECT_URI = `${window.location.pathname}`;
+const SPOTIFY_REDIRECT_URI = `${window.location.origin + window.location.pathname}`;
 
 console.log(SPOTIFY_REDIRECT_URI)
 function generateCodeVerifier() {
@@ -34,16 +34,13 @@ async function connectSpotify() {
         "user-read-private"
     ].join(" ");
 
-    const authUrl =
-        "https://accounts.spotify.com/authorize" +
+    window.location.href = "https://accounts.spotify.com/authorize" +
         `?client_id=${SPOTIFY_CLIENT_ID}` +
         `&response_type=code` +
         `&redirect_uri=${encodeURIComponent(SPOTIFY_REDIRECT_URI)}` +
         "&code_challenge_method=S256" +
         `&code_challenge=${challenge}` +
         `&scope=${encodeURIComponent(scope)}`;
-
-    window.location.href = authUrl;
 }
 
 async function fetchAccessToken(code) {
