@@ -28,7 +28,7 @@ function getCameraConstraints() {
             resolution = { width: { ideal: 1280 }, height: { ideal: 720 } };
     }
     return {
-        audio: okMic,
+        audio: true,
         video: {
             facingMode: currentFacingMode,
             ...resolution
@@ -39,7 +39,7 @@ async function startCamera() {
     try {
         if (cameraStream) stopCamera();
 
-        cameraStream = await navigator.mediaDevices.getUserMedia(getCameraConstraints(okMic));
+        cameraStream = await navigator.mediaDevices.getUserMedia(getCameraConstraints());
 
         const videoElement = document.getElementById("cameraView");
         if (videoElement) {
