@@ -240,7 +240,24 @@
     <div class="tool-button" id="toolTrim">Trim</div>
     <div class="tool-button" id="toolFilter">Filters</div>
     <div class="tool-button" id="toolOverlay">Overlays</div>
+</div>
 
+<div id="editorModal"
+     style="display:none; position:fixed; left:0; bottom:0; width:100%;
+            background:#181818; padding:15px; border-top:2px solid #333;
+            z-index:9999; text-align:center;">
+
+    <h4 id="editorModalTitle" style="color:#fff; margin-bottom:10px;"></h4>
+
+    <div id="editorModalButtons"
+         style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+    </div>
+
+    <button onclick="closeEditorModal()"
+            style="margin-top:10px; padding:8px 20px; background:#333;
+                   color:#fff; border:none; border-radius:6px;">
+        Close
+    </button>
 </div>
 
 <!-- Injected Bottom Nav -->
