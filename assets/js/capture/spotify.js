@@ -1,7 +1,7 @@
 const SPOTIFY_CLIENT_ID = "260e523c8d1e430899632bd0f233e2ce";
 let breakLoop = false;
 // Dynamically match current domain (desktop OR phone)
-const SPOTIFY_REDIRECT_URI = `${window.location.origin}/capture.html`;
+const SPOTIFY_REDIRECT_URI = `${window.location.pathname}`;
 
 console.log(SPOTIFY_REDIRECT_URI)
 function generateCodeVerifier() {
