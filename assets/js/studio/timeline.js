@@ -13,6 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let trimEndSec = null;
 
 
+    /* ---------------------------------------------
+       PLAYHEAD UPDATE
+    --------------------------------------------- */
     function updatePlayhead() {
         if (!video.duration) return;
 
@@ -25,7 +28,27 @@ document.addEventListener("DOMContentLoaded", () => {
     video.addEventListener("timeupdate", updatePlayhead);
 
 
+    /* ---------------------------------------------
+       REAL TRIM LOGIC  (THIS IS THE IMPORTANT PART)
+    --------------------------------------------- */
+    video.addEventListener("timeupdate", () => {
+        // Stay inside left trim boundary
+        if (video.currentTime < trimStartSec) {
+            video.currentTime = trimStartSec;
+        }
 
+        // Loop when reaching trim end
+        if (video.currentTime > trimEndSec) {
+            video.currentTime = trimStartSec; // loop back
+            // OR use: video.pause(); to stop instead
+        }
+    });
+
+
+
+    /* ---------------------------------------------
+       SCRUBBING ON TIMELINE
+    --------------------------------------------- */
     function scrubTo(e) {
         const rect = videoTrack.getBoundingClientRect();
         const pos = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
@@ -39,12 +62,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     videoTrack.addEventListener("click", scrubTo);
 
-    // Touch scrubbing
+    // Touch support
     videoTrack.addEventListener("touchstart", scrubTo, { passive: false });
     videoTrack.addEventListener("touchmove", scrubTo, { passive: false });
 
 
 
+    /* ---------------------------------------------
+       TRIM HANDLE DRAGGING
+    --------------------------------------------- */
     function handleTrimDrag(handleEl, isLeft) {
 
         let dragging = false;
@@ -73,31 +99,44 @@ document.addEventListener("DOMContentLoaded", () => {
             if (video.duration) {
                 const time = (x / rect.width) * video.duration;
 
-                if (isLeft) trimStartSec = time;
-                else trimEndSec = time;
+                if (isLeft) {
+                    trimStartSec = time;
+                    // Snap current video to new trim start
+                    video.currentTime = trimStartSec;
+                } else {
+                    trimEndSec = time;
+                }
             }
         }
 
-        // Mouse events
+        // Mouse
         handleEl.addEventListener("mousedown", start);
         window.addEventListener("mousemove", move);
-        window.addEventListener("mouseup",   end);
+        window.addEventListener("mouseup", end);
 
-        // Touch events
+        // Touch
         handleEl.addEventListener("touchstart", start);
-        window.addEventListener("touchmove",  move, { passive: false });
-        window.addEventListener("touchend",   end);
+        window.addEventListener("touchmove", move, { passive: false });
+        window.addEventListener("touchend", end);
     }
 
     handleTrimDrag(trimLeft, true);
     handleTrimDrag(trimRight, false);
 
+
+
+    /* ---------------------------------------------
+       SET INITIAL TRIM END WHEN VIDEO IS LOADED
+    --------------------------------------------- */
     video.addEventListener("loadedmetadata", () => {
         trimEndSec = video.duration;
     });
 
 
 
+    /* ---------------------------------------------
+       PUBLIC API FOR OTHER SCRIPTS
+    --------------------------------------------- */
     window.BeatCamTimeline = {
         updatePlayhead,
         getTrimBounds: () => ({

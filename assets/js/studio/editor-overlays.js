@@ -7,6 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+    /* ----------------------------------------------------
+       PUBLIC OVERLAY ACTIONS
+    ---------------------------------------------------- */
     function addTextOverlay() {
         const text = prompt("Enter text:");
         if (!text) return;
@@ -29,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         input.onchange = () => {
             const file = input.files[0];
             if (!file) return;
+
             const url = URL.createObjectURL(file);
 
             overlays.push(createOverlayElement("image", url));
@@ -37,6 +41,11 @@ document.addEventListener("DOMContentLoaded", () => {
         input.click();
     }
 
+
+
+    /* ----------------------------------------------------
+       CREATE OVERLAY ELEMENT
+    ---------------------------------------------------- */
     function createOverlayElement(type, content) {
 
         const el = document.createElement("div");
@@ -47,11 +56,12 @@ document.addEventListener("DOMContentLoaded", () => {
         el.style.fontSize = "26px";
         el.style.zIndex = 300;
         el.style.cursor = "move";
+        el.style.userSelect = "none"; // prevent accidental text highlight
 
         if (type === "text") el.innerText = content;
         if (type === "emoji") el.innerText = content;
         if (type === "image") {
-            el.innerHTML = `<img src="${content}" class="overlay-img" style="max-width:150px;">`;
+            el.innerHTML = `<img src="${content}" class="overlay-img" style="max-width:150px; pointer-events:none;">`;
         }
 
         // Enable interactions
@@ -75,6 +85,11 @@ document.addEventListener("DOMContentLoaded", () => {
         return { type, content, element: el, block };
     }
 
+
+
+    /* ----------------------------------------------------
+       DRAGGING LOGIC
+    ---------------------------------------------------- */
     function makeOverlayDraggable(el) {
 
         let isDragging = false;
@@ -111,23 +126,28 @@ document.addEventListener("DOMContentLoaded", () => {
             el.classList.remove("no-select");
         }
 
-        // Mouse
+        // Mouse support
         el.addEventListener("mousedown", start);
         window.addEventListener("mousemove", move);
         window.addEventListener("mouseup", end);
 
-        // Touch
+        // Touch support
         el.addEventListener("touchstart", start);
         window.addEventListener("touchmove", move, { passive: false });
         window.addEventListener("touchend", end);
     }
 
 
+
+
+    /* ----------------------------------------------------
+       RESIZE HANDLE
+    ---------------------------------------------------- */
     function addResizeHandle(el) {
+
         const handle = document.createElement("div");
         handle.classList.add("resize-handle");
 
-        // styling
         handle.style.width = "20px";
         handle.style.height = "20px";
         handle.style.position = "absolute";
@@ -171,7 +191,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+
+
+    /* ----------------------------------------------------
+       PINCH ZOOM (MOBILE)
+    ---------------------------------------------------- */
     function enablePinchZoom(el) {
+
         let initialDist = 0;
         let initialWidth = 0;
 
@@ -180,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const dx = e.touches[1].clientX - e.touches[0].clientX;
                 const dy = e.touches[1].clientY - e.touches[0].clientY;
 
-                initialDist = Math.sqrt(dx*dx + dy*dy);
+                initialDist = Math.sqrt(dx * dx + dy * dy);
                 initialWidth = el.offsetWidth;
             }
         });
@@ -190,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const dx = e.touches[1].clientX - e.touches[0].clientX;
                 const dy = e.touches[1].clientY - e.touches[0].clientY;
 
-                const newDist = Math.sqrt(dx*dx + dy*dy);
+                const newDist = Math.sqrt(dx * dx + dy * dy);
                 const scale = newDist / initialDist;
 
                 el.style.width = (initialWidth * scale) + "px";
@@ -201,6 +227,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+
+    /* ----------------------------------------------------
+       PUBLIC API
+    ---------------------------------------------------- */
     window.BeatCamOverlays = {
         addTextOverlay,
         addEmojiOverlay,

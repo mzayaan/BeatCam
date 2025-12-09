@@ -2,24 +2,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* TOOL BUTTONS */
     const toolTrim = document.getElementById("toolTrim");
-    const toolCrop = document.getElementById("toolCrop");
     const toolFilter = document.getElementById("toolFilter");
     const toolOverlay = document.getElementById("toolOverlay");
 
     const video = document.getElementById("studioVideo");
 
-    /* EDITOR STATE */
     let currentMode = null;
 
+
+    /* -----------------------------------------------------------
+       MASTER MODE SWITCHER
+    ----------------------------------------------------------- */
     function setMode(mode) {
         currentMode = mode;
         console.log("[Editor] Mode:", mode);
 
         resetToolButtons();
         highlightTool(mode);
+        hideAllModeUI();  // <<< important
         activateMode(mode);
     }
 
+
+    /* -----------------------------------------------------------
+       RESET BUTTON STYLES
+    ----------------------------------------------------------- */
     function resetToolButtons() {
         document.querySelectorAll(".tool-button").forEach(btn => {
             btn.style.background = "#262626";
@@ -29,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function highlightTool(mode) {
         const buttonMap = {
             trim: toolTrim,
-            crop: toolCrop,
             filter: toolFilter,
             overlay: toolOverlay
         };
@@ -38,20 +44,32 @@ document.addEventListener("DOMContentLoaded", () => {
         if (btn) btn.style.background = "#444";
     }
 
+
+    /* -----------------------------------------------------------
+       HIDE ALL MODE UI ELEMENTS
+    ----------------------------------------------------------- */
+    function hideAllModeUI() {
+
+        // Hide TRIM handles
+        document.querySelector(".trim-left").style.display = "none";
+        document.querySelector(".trim-right").style.display = "none";
+    }
+
+
+    /* -----------------------------------------------------------
+       ACTIVATE MODE
+    ----------------------------------------------------------- */
     function activateMode(mode) {
+
         switch (mode) {
 
             /* TRIM MODE */
             case "trim":
                 console.log("[Editor] Trim mode activated");
+
                 document.querySelector(".trim-left").style.display = "block";
                 document.querySelector(".trim-right").style.display = "block";
-                break;
 
-            /* CROP MODE */
-            case "crop":
-                console.log("[Editor] Crop mode activated");
-                enableCropUI();
                 break;
 
             /* FILTER MODE */
@@ -59,6 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("[Editor] Filter mode activated");
                 openFilterEditor();
                 break;
+
 
             /* OVERLAY MODE */
             case "overlay":
@@ -68,29 +87,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    /* TOOL CLICK EVENTS */
-    toolTrim.addEventListener("click", () => setMode("trim"));
-    toolCrop.addEventListener("click", () => setMode("crop"));
-    toolFilter.addEventListener("click", () => setMode("filter"));
-    toolOverlay.addEventListener("click", () => setMode("overlay"));
-
-
-    function enableCropUI() {
-        if (document.getElementById("cropBox")) return;
-
-        const cropBox = document.createElement("div");
-        cropBox.id = "cropBox";
-        cropBox.style.position = "absolute";
-        cropBox.style.border = "2px dashed #ffcc00";
-        cropBox.style.top = "20%";
-        cropBox.style.left = "20%";
-        cropBox.style.width = "60%";
-        cropBox.style.height = "60%";
-        cropBox.style.zIndex = "200";
-        cropBox.style.pointerEvents = "auto";
-
-        document.getElementById("videoPreviewContainer").appendChild(cropBox);
-    }
 
     function openFilterEditor() {
         const filter = prompt("Choose filter: brightness, contrast, saturate");
@@ -106,6 +102,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    /* -----------------------------------------------------------
+       OVERLAYS
+    ----------------------------------------------------------- */
     function openOverlayMenu() {
         const type = prompt("Overlay Type: text, emoji, image?");
         if (!type) return;
@@ -114,6 +113,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (type === "emoji") BeatCamOverlays.addEmojiOverlay();
         if (type === "image") BeatCamOverlays.addImageOverlay();
     }
+
+
+    toolTrim.addEventListener("click", () => setMode("trim"));
+    toolFilter.addEventListener("click", () => setMode("filter"));
+    toolOverlay.addEventListener("click", () => setMode("overlay"));
+
 
     /* PUBLIC API */
     window.BeatCamEditor = {
