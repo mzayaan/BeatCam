@@ -11,6 +11,8 @@ let currentFilter = "none";
 let timerInterval = null;
 let seconds = 0;
 
+let okMic = false;
+let okCam = false;
 
 /* START/STOP CAMERA + CONSTRAINTS */
 function getCameraConstraints(okMic) {
@@ -33,7 +35,7 @@ function getCameraConstraints(okMic) {
         }
     };
 }
-async function startCamera(okCam, okMic) {
+async function startCamera() {
     try {
         if (cameraStream) stopCamera();
 
