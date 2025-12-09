@@ -286,15 +286,15 @@
 <script>
     const startRecordBtn = document.getElementById('startRecord');
     const stopRecordBtn = document.getElementById('stopRecord');
-    startRecordBtn.onclick = async () => {
-        await startCamera();
+    startRecordBtn.onclick = () => {
+        startCamera();
 
         startRecording();
         startTimer();
         startRecordBtn.disabled = true;
         stopRecordBtn.disabled = false;
     };
-    stopRecordBtn.addEventListener("click", () => {
+    stopRecordBtn.onclick = () => {
         if (!mediaRecorder) return;
         mediaRecorder.stop();
 
@@ -307,7 +307,7 @@
             console.log("⏹ Recording stopped");
             window.location.href = "studio.html";
         }
-    });
+    };
 </script>
 
 </body>
