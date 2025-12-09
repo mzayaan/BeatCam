@@ -168,7 +168,4 @@ async function saveRecording() {
     // store the blob in the DB
     const clipId = await saveClip(blob);
     sessionStorage.setItem("selected-clip-id", clipId + "")
-
-    // Redirect to studio
-    window.location.href = "studio.html";
 }
