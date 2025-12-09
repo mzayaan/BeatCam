@@ -1,5 +1,3 @@
-// studio.js – BeatCam Studio (Phase 7)
-
 document.addEventListener("DOMContentLoaded", async () => {
 
     const videoEl = document.getElementById("studioVideo");
@@ -9,9 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
-    /* ----------------------------------------------------
-       LOAD VIDEO CLIP FROM Capture or Library
-    ---------------------------------------------------- */
+
     let clipId = parseInt(sessionStorage.getItem("selected-clip-id"));
 
     let clip = null;
@@ -26,25 +22,30 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.warn("[Studio] Failed to load selected clip:", err);
     }
 
+    // Fallback: load from saved library
     if (!videoSrc) {
         const clips = listClips();
-        if (clips.length > 0) videoSrc = clips[0].url;
+        if (clips.length > 0) {
+            videoSrc = clips[0].url;
+        }
     }
 
+    // No video available at all
     if (!videoSrc) {
-        setTimeout(() => alert("No clip found. Please record a video in Capture."),1000)
+        setTimeout(() => {
+            alert("No clip found. Please record a video in Capture.");
+        }, 600);
         return;
     }
 
+    // Set video source
     videoEl.src = videoSrc;
 
-    /* ----------------------------------------------------
-       INITIALIZE TIMELINE WHEN VIDEO IS READY
-    ---------------------------------------------------- */
+
+
     videoEl.addEventListener("loadedmetadata", () => {
         if (window.BeatCamTimeline) {
-            // timeline auto-updates playhead
-            console.log("[Studio] Timeline initialized.");
+            console.log("[Studio] Timeline ready.");
         }
     });
 

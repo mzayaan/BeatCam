@@ -5,9 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let overlays = []; // stored overlays
 
-    /* ===========================================================
-       ADD OVERLAYS
-    =========================================================== */
+
 
     function addTextOverlay() {
         const text = prompt("Enter text:");
@@ -39,9 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
         input.click();
     }
 
-    /* ===========================================================
-       CREATE OVERLAY ELEMENT
-    =========================================================== */
     function createOverlayElement(type, content) {
 
         const el = document.createElement("div");
@@ -56,10 +51,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (type === "text") el.innerText = content;
         if (type === "emoji") el.innerText = content;
         if (type === "image") {
-            el.innerHTML = `<img src="${content}" class="overlay-img">`;
+            el.innerHTML = `<img src="${content}" class="overlay-img" style="max-width:150px;">`;
         }
 
-        // Add dragging + resize + pinch zoom
+        // Enable interactions
         makeOverlayDraggable(el);
         addResizeHandle(el);
         enablePinchZoom(el);
@@ -80,9 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return { type, content, element: el, block };
     }
 
-    /* ===========================================================
-       DRAGGABLE OVERLAY (Touch + Mouse + Smooth)
-    =========================================================== */
     function makeOverlayDraggable(el) {
 
         let isDragging = false;
@@ -110,11 +102,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const dx = evt.clientX - startX;
             const dy = evt.clientY - startY;
 
-            const newX = origX + dx;
-            const newY = origY + dy;
-
-            el.style.left = newX + "px";
-            el.style.top = newY + "px";
+            el.style.left = origX + dx + "px";
+            el.style.top = origY + dy + "px";
         }
 
         function end() {
@@ -133,13 +122,12 @@ document.addEventListener("DOMContentLoaded", () => {
         window.addEventListener("touchend", end);
     }
 
-    /* ===========================================================
-       RESIZE HANDLE (Bottom-Right Corner)
-    =========================================================== */
+
     function addResizeHandle(el) {
         const handle = document.createElement("div");
         handle.classList.add("resize-handle");
 
+        // styling
         handle.style.width = "20px";
         handle.style.height = "20px";
         handle.style.position = "absolute";
@@ -153,10 +141,12 @@ document.addEventListener("DOMContentLoaded", () => {
         el.appendChild(handle);
 
         let resizing = false;
-        let startX, startY, startW, startH;
+        let startX = 0, startY = 0;
+        let startW = 0, startH = 0;
 
         handle.addEventListener("mousedown", e => {
             resizing = true;
+
             startX = e.clientX;
             startY = e.clientY;
 
@@ -180,9 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
         window.addEventListener("mouseup", () => resizing = false);
     }
 
-    /* ===========================================================
-       PINCH-TO-ZOOM FOR MOBILE
-    =========================================================== */
+
     function enablePinchZoom(el) {
         let initialDist = 0;
         let initialWidth = 0;
@@ -212,41 +200,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    /* ===========================================================
-       EXPORT FILTER BUILDER
-    =========================================================== */
-    function getOverlayExportFilters() {
-        let filters = [];
 
-        overlays.forEach(o => {
-            const x = o.element.offsetLeft;
-            const y = o.element.offsetTop;
-
-            if (o.type === "text") {
-                const safeText = o.content.replace(/:/g, "\\:");
-                filters.push(`drawtext=text='${safeText}':x=${x}:y=${y}:fontsize=32:fontcolor=white`);
-            }
-
-            if (o.type === "emoji") {
-                filters.push(`drawtext=text='${o.content}':x=${x}:y=${y}:fontsize=48`);
-            }
-
-            if (o.type === "image") {
-                filters.push(`overlay=${x}:${y}`);
-            }
-        });
-
-        return filters.join(",");
-    }
-
-    /* ===========================================================
-       PUBLIC API
-    =========================================================== */
     window.BeatCamOverlays = {
         addTextOverlay,
         addEmojiOverlay,
-        addImageOverlay,
-        getFilterForExport: getOverlayExportFilters
+        addImageOverlay
     };
 
 });
