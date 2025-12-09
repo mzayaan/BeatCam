@@ -89,9 +89,9 @@ document.addEventListener("acceleration", e => {
     if (isRecording && e.detail) {
         applyShakeEffect(e.detail.x, e.detail.y, e.detail.z);
     }
-    accX.innerHTML = e.detail.x;
-    accY.innerHTML = e.detail.y;
-    accZ.innerHTML = e.detail.z;
+    accX.innerHTML = parseInt(e.detail.x) + "";
+    accY.innerHTML = parseInt(e.detail.y) + "";
+    accZ.innerHTML = parseInt(e.detail.z) + "";
 });
 function applyFilter() {
     const video = document.getElementById("cameraView");
