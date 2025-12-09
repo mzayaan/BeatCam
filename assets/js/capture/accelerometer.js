@@ -13,7 +13,6 @@ function startAccelerometer() {
                     // Hide the button once permissions are granted
                     const btn = document.getElementById("enableMotionBtn");
                     if (btn) btn.style.display = "none";
-
                 } else {
                     console.log("Permission for motion denied.");
                 }
@@ -31,7 +30,9 @@ function startAccelerometer() {
         if (btn) btn.style.display = "none";
     }
 }
-
+const accX = document.getElementById("accX");
+const accY = document.getElementById("accY");
+const accZ = document.getElementById("accZ");
 
 function sendAccelerationData(event) {
 
@@ -48,13 +49,8 @@ function sendAccelerationData(event) {
     });
 
     document.dispatchEvent(newEvent);
+
+    accX.innerHTML = a.x + ""
+    accY.innerHTML = a.y + ""
+    accZ.innerHTML = a.z + ""
 }
-
-
-// IMPORTANT: No auto-start on load!
-// iOS will block the permission request
-// User must click a button:
-
-document.getElementById("enableMotionBtn").onclick = () => {
-    startAccelerometer();
-};
