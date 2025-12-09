@@ -131,7 +131,7 @@
 
 <!-- Page Header -->
 <header class="capture-header">
-    <h1>Capture v1</h1>
+    <h1>Capture</h1>
     <p>Record video with live audio & motion feedback</p>
 </header>
 
@@ -287,9 +287,12 @@
     const startRecordBtn = document.getElementById('startRecord');
     const stopRecordBtn = document.getElementById('stopRecord');
     startRecordBtn.onclick = async () => {
-        await startCamera();
+        okMic = await requestMicrophonePermission();
+        if (okMic && waveformCanvas) await startMicrophone();
+        okCam = await requestCameraPermission();
+        if (okCam) await startCamera();
 
-        if (true) {
+        if (okMic && okCam) {
             startRecording();
             startTimer();
             startRecordBtn.disabled = true;
