@@ -30,9 +30,6 @@ function startAccelerometer() {
         if (btn) btn.style.display = "none";
     }
 }
-const accX = document.getElementById("accX");
-const accY = document.getElementById("accY");
-const accZ = document.getElementById("accZ");
 
 function sendAccelerationData(event) {
 
@@ -49,8 +46,4 @@ function sendAccelerationData(event) {
     });
 
     document.dispatchEvent(newEvent);
-
-    accX.innerHTML = a.x + ""
-    accY.innerHTML = a.y + ""
-    accZ.innerHTML = a.z + ""
 }

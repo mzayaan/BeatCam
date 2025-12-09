@@ -11,8 +11,9 @@ let currentFilter = "none";
 let timerInterval = null;
 let seconds = 0;
 
-let okMic = false;
-let okCam = false;
+const accX = document.getElementById("accX");
+const accY = document.getElementById("accY");
+const accZ = document.getElementById("accZ");
 
 /* START/STOP CAMERA + CONSTRAINTS */
 function getCameraConstraints() {
@@ -88,6 +89,9 @@ document.addEventListener("acceleration", e => {
     if (isRecording && e.detail) {
         applyShakeEffect(e.detail.x, e.detail.y, e.detail.z);
     }
+    accX.innerHTML = e.detail.x;
+    accY.innerHTML = e.detail.y;
+    accZ.innerHTML = e.detail.z;
 });
 function applyFilter() {
     const video = document.getElementById("cameraView");
