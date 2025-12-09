@@ -36,7 +36,20 @@ async function startCamera() {
             applyFilter();
         }
 
-        console.log("📷 Camera started");
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioContext.createAnalyser();
+        source = audioContext.createMediaStreamSource(cameraStream);
+
+        analyser.fftSize = 2048;
+        dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+        source.connect(analyser);
+
+        drawWaveform();
+        startVolumeMeter();
+        startBeatDetection();
+
+        console.log("📷 Camera & Microphone started");
     } catch (err) {
         alert(
             "Camera Error:\n" +

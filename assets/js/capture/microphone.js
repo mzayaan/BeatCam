@@ -27,37 +27,6 @@ const beatThreshold = 170;   // Sensitivity
 const beatMinInterval = 140; // Minimum ms between beats
 
 
-async function startMicrophone() {
-    try {
-        // Reset global beat session
-        if (window.BeatSync) {
-            BeatSync.startSession(); // Clears old beats
-        }
-        beatTimestamps = [];
-
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        analyser = audioContext.createAnalyser();
-        source = audioContext.createMediaStreamSource(stream);
-
-        analyser.fftSize = 2048;
-        dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-        source.connect(analyser);
-
-        drawWaveform();
-        startVolumeMeter();
-        startBeatDetection();
-
-        console.log("🎤 Microphone started");
-
-    } catch (err) {
-        console.error("Microphone error:", err);
-        alert("Microphone access required. Please allow mic permission in your browser.");
-    }
-}
-
 function drawWaveform() {
     requestAnimationFrame(drawWaveform);
 
