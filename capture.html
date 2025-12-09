@@ -240,13 +240,6 @@
 <!-- SPOTIFY JS -->
 <script src="assets/js/capture/spotify.js"></script>
 <script>
-
-    document.addEventListener("DOMContentLoaded", async () => {
-        // const ok = await requestAllPermissions();
-        // if (ok) console.log("All permissions granted ✔");
-    });
-
-
     // Handle Spotify Login Button
     const btn = document.getElementById("spotifyConnectBtn");
     btn.onclick = () => {
@@ -286,15 +279,15 @@
 <script>
     const startRecordBtn = document.getElementById('startRecord');
     const stopRecordBtn = document.getElementById('stopRecord');
-    startRecordBtn.onclick = () => {
-        startCamera();
+    startRecordBtn.onclick = async () => {
+        await startCamera();
 
         startRecording();
         startTimer();
         startRecordBtn.disabled = true;
         stopRecordBtn.disabled = false;
     };
-    stopRecordBtn.onclick = () => {
+    stopRecordBtn.onclick = async () => {
         if (!mediaRecorder) return;
         mediaRecorder.stop();
 
