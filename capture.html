@@ -287,12 +287,9 @@
     const startRecordBtn = document.getElementById('startRecord');
     const stopRecordBtn = document.getElementById('stopRecord');
     startRecordBtn.onclick = async () => {
-        okMic = await requestMicrophonePermission();
-        if (okMic && waveformCanvas) await startMicrophone();
-        okCam = await requestCameraPermission();
-        if (okCam) await startCamera();
+        await startCamera();
 
-        if (okMic && okCam) {
+        if (true) {
             startRecording();
             startTimer();
             startRecordBtn.disabled = true;
