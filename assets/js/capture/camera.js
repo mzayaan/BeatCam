@@ -16,22 +16,10 @@ let okCam = false;
 
 /* START/STOP CAMERA + CONSTRAINTS */
 function getCameraConstraints() {
-    let resolution;
-    switch (currentResolution) {
-        case "480p":
-            resolution = { width: { ideal: 640 }, height: { ideal: 480 } };
-            break;
-        case "1080p":
-            resolution = { width: { ideal: 1920 }, height: { ideal: 1080 } };
-            break;
-        default:
-            resolution = { width: { ideal: 1280 }, height: { ideal: 720 } };
-    }
     return {
         audio: true,
         video: {
-            facingMode: currentFacingMode,
-            ...resolution
+            facingMode: { ideal: currentFacingMode }
         }
     };
 }
