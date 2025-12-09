@@ -3,7 +3,6 @@ let breakLoop = false;
 // Dynamically match current domain (desktop OR phone)
 const SPOTIFY_REDIRECT_URI = `${window.location.origin + window.location.pathname}`;
 
-console.log(SPOTIFY_REDIRECT_URI)
 function generateCodeVerifier() {
     let text = "";
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
